@@ -3,6 +3,7 @@ import os, sys, commands, time
 if __name__ == "__main__":
 
     argv_pos = 1
+    useAhadd = True
 
     OUT_DIR = "dum"
     IN_DIR = "dum"
@@ -32,7 +33,12 @@ if __name__ == "__main__":
         target = dirs[0].split("/")
         target = target[-1]
         print target
-        haddcmd = "hadd "+OUT_DIR+"/"+target+".root "
+        if useAhadd:
+            # ahadd.py requries a location to store temporaty intermediate files: use -t option and path
+            haddcmd = "ahadd.py -t /scratch/$USER "+OUT_DIR+"/"+target+".root "
+        else:
+            haddcmd = "hadd "+OUT_DIR+"/"+target+".root "
         haddcmd += IN_DIR+"/"+target+"/*.root"
         print haddcmd
         os.system(haddcmd)
+
